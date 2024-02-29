@@ -1,10 +1,9 @@
 import re
 from pathlib import Path
 
-
 # Relative path
 Input_Apex_path = Path("./Sample_apex.cls")
-Output_Apex_path = Path("")
+Output_Apex_path = Path("./Output_apex.cls")
 
 def extract_soql_queries(file_path):
     with open(file_path, 'r') as file:
@@ -22,32 +21,34 @@ def extract_soql_queries(file_path):
                 stack.append(nested_code.strip())
         return queries
 
-# Example usage
-# apex_code = """
-# 1.
-# Account[] accounts = [SELECT Id, Name FROM Account WHERE CreatedDate = TODAY];
+    # Example usage
+    # apex_code = """
+    # 1.
+    # Account[] accounts = [SELECT Id, Name FROM Account WHERE CreatedDate = TODAY];
 
-# 2.
-# Contact[] contacts = [SELECT Id, Name FROM Contact 
-#                       WHERE AccountId IN :accountIds];
+    # 2.
+    # Contact[] contacts = [SELECT Id, Name FROM Contact 
+    #                       WHERE AccountId IN :accountIds];
 
-# 3.
-# public class AccountController {
-#     public List<Account> getRecentAccounts() {
-#         return [SELECT Id, Name, CreatedDate FROM Account ORDER BY CreatedDate DESC LIMIT 5];
-#     }
-# }
+    # 3.
+    # public class AccountController {
+    #     public List<Account> getRecentAccounts() {
+    #         return [SELECT Id, Name, CreatedDate FROM Account ORDER BY CreatedDate DESC LIMIT 5];
+    #     }
+    # }
 
-# 4.
-# Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = TODAY];
+    # 4.
+    # Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = TODAY];
 
-# 5.
-# Account[] accounts = [SELECT Id, Name, CreatedDate
-#                         FROM Account
-#                         ORDER BY CreatedDate DESC
-#                         LIMIT 5];
+    # 5.
+    # Account[] accounts = [SELECT Id, Name, CreatedDate
+    #                         FROM Account
+    #                         ORDER BY CreatedDate DESC
+    #                         LIMIT 5];
 
-# """
+    # """
+
+
 soql_queries = extract_soql_queries(Input_Apex_path)
 for query in soql_queries:
     # print("Object:", query['object'])
