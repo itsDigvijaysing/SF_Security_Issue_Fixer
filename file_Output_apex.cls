@@ -6,7 +6,7 @@ public class Sample_apex {
             accountIds.add(opp.AccountId);
         }
 
-        List<Account> accountsToUpdate = [SELECT Id, Last_Opportunity_Amount__c FROM Account WHERE Id IN :accountIds];
+        List<Account> accountsToUpdate = [SELECT Id, Last_Opportunity_Amount__c FROM Account WHERE Id IN :accountIds LIMIT 10];
         Map<Id, Decimal> accountIdToAmountMap = new Map<Id, Decimal>();
 
         for (Opportunity opp : opportunities) {
@@ -33,7 +33,7 @@ public class Sample_apex {
 
         public class AccountController {
             public List<Account> getRecentAccounts() {
-                return [SELECT Id, Name, CreatedDate FROM Account ORDER BY CreatedDate DESC LIMIT 5];
+                return [SELECT Id, Name, CreatedDate FROM Account WHERE ORDER BY CreatedDate DESC LIMIT 5];
             }
         }
 
@@ -41,7 +41,7 @@ public class Sample_apex {
 
         Account[] accounts = [SELECT Id, Name, CreatedDate
                                 FROM Account
-                                ORDER BY CreatedDate DESC
+                                WHERE ORDER BY CreatedDate DESC
                                 LIMIT 5];
 
     }

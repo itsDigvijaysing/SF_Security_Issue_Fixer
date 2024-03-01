@@ -1,0 +1,6 @@
+{'fields': ['Id', ' Last_Opportunity_Amount__c'], 'object': 'Account'}
+{'fields': ['Id', ' Name'], 'object': 'Account'}
+{'fields': ['Id', ' Name'], 'object': 'Contact'}
+{'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
+{'fields': ['Id', ' Name', ' (SELECT Id', ' Name'], 'object': 'Contacts) FROM Account'}
+{'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
