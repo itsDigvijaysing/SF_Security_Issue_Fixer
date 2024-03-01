@@ -6,7 +6,7 @@ public class Sample_apex {
             accountIds.add(opp.AccountId);
         }
 
-        List<Account> accountsToUpdate = [SELECT Id, Last_Opportunity_Amount__c FROM Account WHERE Id IN :accountIds LIMIT 10];
+        List<Account> accountsToUpdate = [SELECT Id, Last_Opportunity_Amount__c FROM Account WHERE Id IN :accountIds WITH USER_MODE LIMIT 10];
         Map<Id, Decimal> accountIdToAmountMap = new Map<Id, Decimal>();
 
         for (Opportunity opp : opportunities) {
@@ -26,22 +26,22 @@ public class Sample_apex {
 
     public static void sampleSOQL() {
         // Sample SOQL Queries
-        Account[] accounts = [SELECT Id, Name FROM Account WHERE CreatedDate = TODAY];
+        Account[] accounts = [SELECT Id, Name FROM Account WHERE CreatedDate = TODAY WITH USER_MODE ];
 
         Contact[] contacts = [SELECT Id, Name FROM Contact 
-                            WHERE AccountId IN :accountIds];
+                            WHERE AccountId IN :accountIds WITH USER_MODE ];
 
         public class AccountController {
             public List<Account> getRecentAccounts() {
-                return [SELECT Id, Name, CreatedDate FROM Account WHERE ORDER BY CreatedDate DESC LIMIT 5];
+                return [SELECT Id, Name, CreatedDate FROM Account WHERE WITH USER_MODE ORDER BY CreatedDate DESC LIMIT 5];
             }
         }
 
-        Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = TODAY];
+        Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = TODAY WITH USER_MODE ];
 
         Account[] accounts = [SELECT Id, Name, CreatedDate
                                 FROM Account
-                                WHERE ORDER BY CreatedDate DESC
+                                WHERE WITH USER_MODE ORDER BY CreatedDate DESC
                                 LIMIT 5];
 
     }
