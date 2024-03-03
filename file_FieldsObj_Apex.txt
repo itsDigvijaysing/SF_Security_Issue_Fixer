@@ -2,5 +2,6 @@
 {'fields': ['Id', ' Name'], 'object': 'Account'}
 {'fields': ['Id', ' Name'], 'object': 'Contact'}
 {'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
-{'fields': ['Id', ' Name', ' (SELECT Id', ' Name'], 'object': 'Contacts) FROM Account'}
+{'fields': ['Id', ' Name', ' ( Id', ' Name'], 'object': 'Contacts'}
 {'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
+{'fields': ['Id', ' Name'], 'object': 'Account LIMIT 5]'}

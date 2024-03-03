@@ -22,42 +22,92 @@ def soql_query_fixer(Output_Apex_path):
         pattern = re.compile(r'Select\s(.*?)\sFrom\s(.*?)(\s*?Where\s.*?)?;', re.IGNORECASE | re.DOTALL)
         queries = []
         stack = [apex_code]
+        a=0
         while stack:
+            a += 1
             current_code = stack.pop()
             for match in pattern.finditer(current_code):
                 fields = match.group(1)
                 obj = match.group(2)
                 query = match.group(0)
                 if "Order By" in query or "ORDER BY" in query or "order by" in query:
-                    print(query)
-                    print("Order By")
+                    # print("Order By")
                     query = re.sub(r'(Order By|ORDER BY|order by)', r'WITH USER_MODE \1', query)
-                    print(query)
+                    # print(query)
                     # query = f"// SOQL Query Fixed as per Codescan Rule\n{query}"
                 elif "Limit" in query or "limit" in query or "LIMIT" in query:
-                    print(query)
-                    print("Limit")
+                    # print("Limit")
                     query = re.sub(r'(Limit|limit|LIMIT)', r'WITH USER_MODE \1', query)
                     # query = f"// SOQL Query Fixed as per Codescan Rule\n{query}"
-                    print(query)
+                    # print(query)
                 else:
-                    print(query)
-                    print("Normal")
+                    # print("Normal")
                     # query = f"// SOQL Query Fixed as per Codescan Rule\n{query}"
                     query = re.sub(r'(];)', r' WITH USER_MODE \1', query)
-                    print(query)
+                    # print(query)
                 
-                nested_code = match.group(0).split('SELECT', 1)[-1].rsplit('FROM', 1)[0]
+                nested_code = match.group(0).split('SELECT', 1)[-1].rsplit('FROM', 1)[0] # Extract the query & check for nested soql query good to have for future work
                 stack.append(nested_code.strip())
-                print("Nested Code")
-                print(nested_code.strip())
 
                 apex_code = apex_code.replace(match.group(0), query)
                 with open(Output_Apex_path, 'w') as file:
                     file.write(apex_code)
 
-soql_query_fixer(Output_Apex_path)
+# Finds DML operations in an Apex code file & replace it with Codescan Rule
+def dml_operation_fixer(file_path):
+    with open(file_path, 'r') as file:
+        apex_code = file.read()
+        pattern = re.compile(r'(Insert|Update|Upsert|Delete|Merge|Undelete)\s(.*?);', re.IGNORECASE | re.DOTALL)
+        queries = []
+        stack = [apex_code]
+        index = 0
+        while stack:
+            index += 1
+            current_code = stack.pop()
+            for match in pattern.finditer(current_code):
+                dml_operation = match.group(1)
+                obj = match.group(2)
+                query = match.group(0)
+                query = f"// DML Operation Fixed as per Codescan Rule\n{query}"
+                nested_code = match.group(0).split(dml_operation, 1)[-1].rsplit(obj, 1)[0]
+                stack.append(nested_code.strip())
+                apex_code = apex_code.replace(match.group(0), query)
+                with open(file_path, 'w') as file:
+                    file.write(apex_code)
 
+
+def comment_out_debugs(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    with open(file_path, 'w') as file:
+        for line in lines:
+            if re.search(r'\bSystem\.debug\b', line, re.IGNORECASE):
+                # print("In 1st Scenario ",line)
+                line = '//' + line
+            file.write(line)
+
+# Mine: Object_Name.sObjectType.getdescribe().isCreateable()
+# Colleague: sobject.getdescribe().object_name.iscreteable() (Maybe)
+
+
+# if(Object_Name.sObjectType.getdescribe().isCreateable()){
+#     # check the field
+# }else{
+#     variable_name.adderror('You do not have permission to create a new Object_Name.');
+# }
+
+# if(Object_Name.sObjectType.getdescribe().isUpdateable()){
+#     # Update object
+# }else{
+#     variable_name.adderror('You do not have permission to update the Object_Name.');
+# }
+
+# if(Object_Name.sObjectType.getdescribe().isDeletable()){
+#     # Delete object
+# }else{
+#     variable_name.adderror('You do not have permission to delete the Object_Name.');
+# }
 
 # Extracts SOQL queries from an Apex code file.
 def extract_soql_queries(file_path):
@@ -65,26 +115,29 @@ def extract_soql_queries(file_path):
         apex_code = file.read()
         pattern = re.compile(r'Select\s(.*?)\sFrom\s(.*?)(\s*?Where\s.*?)?;', re.IGNORECASE | re.DOTALL)
         queries = []
-        stack = [apex_code]
-        print(stack)
-        while stack:
+        stack = [apex_code]  # Complete code Present in stack
+        index = 0
+        while stack: # Loop through the stack
+            index += 1
             current_code = stack.pop()
             for match in pattern.finditer(current_code):
                 fields = match.group(1)
                 obj = match.group(2)
                 queries.append({'fields': fields.strip().split(','), 'object': obj.strip()})
                 nested_code = match.group(0).split('SELECT', 1)[-1].rsplit('FROM', 1)[0]
-                print("old nested code")
-                print(stack)
                 stack.append(nested_code.strip())
-                print (stack)
         return queries
 
 soql_queries = extract_soql_queries(Input_Apex_path)
+print("-------------------")
+soql_query_fixer(Output_Apex_path)
+print("-------")
+comment_out_debugs(Output_Apex_path)
 
 # open the file in write mode and write each item on a new line
 with open(FieldsObj_Apex_path, 'w') as file:  # move file opening outside the loop
     for query in soql_queries:
+        query['fields'] = [field.replace("SELECT", "") for field in query['fields']]
         # print("Fields:", query['fields'])
         # print("Object:", query['object'])
         print(query)
