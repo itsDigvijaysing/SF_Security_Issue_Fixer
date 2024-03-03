@@ -1,7 +1,0 @@
-{'fields': ['Id', ' Last_Opportunity_Amount__c'], 'object': 'Account'}
-{'fields': ['Id', ' Name'], 'object': 'Account'}
-{'fields': ['Id', ' Name'], 'object': 'Contact'}
-{'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
-{'fields': ['Id', ' Name', ' ( Id', ' Name'], 'object': 'Contacts'}
-{'fields': ['Id', ' Name', ' CreatedDate'], 'object': 'Account'}
-{'fields': ['Id', ' Name'], 'object': 'Account LIMIT 5]'}
