@@ -1,4 +1,4 @@
-# SF_Security_Issue_Fixer
+# Salesforce Security Issues Fixer
 
 The Salesforce Security Fixer project aims to enhance the security posture of Salesforce apex code by providing automated tools to fix common security issues and vulnerabilities. This project focuses on addressing various aspects of security, including SOQL query analysis, field-level security, CRUD level security, sharing settings, and debug statement cleanup.
 
