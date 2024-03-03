@@ -1,6 +1,13 @@
 # SF_Security_Issue_Fixer
+
 Fixing Salesforce Code Scan Issues
 
+## Functionality
+
+1. Commenting all System Debugs.
+2. Fixing Field Level Security of SOQL Operations by using USER_MODE.
+3. Fixing CRUD Level Security of DML Operations by pre checking access.
+4. Giving `With Sharing` / `Without Sharing` to component as per User Choice. (In Progress)
 
 ## Basic Things to Know
 

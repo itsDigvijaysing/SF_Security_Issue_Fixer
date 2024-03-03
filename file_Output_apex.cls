@@ -37,13 +37,29 @@ public class Sample_apex {
             }
         }
 
-        Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = TODAY WITH USER_MODE ];
+        Account[] accounts = [SELECT Id, Name, (SELECT Id, Name FROM Contacts WHERE id='121') FROM Account WHERE CreatedDate = TODAY WITH USER_MODE ];
 
         Account[] accounts = [SELECT Id, Name, CreatedDate
                                 FROM Account
                                 WHERE WITH USER_MODE ORDER BY CreatedDate DESC
                                 LIMIT 5];
+    }
 
+    public static void sampledebugs(){
+//        System.debug('This is a simple debug statement.');
+
+        Integer i = 5;
+//        System.debug('The value of i is: ' + i);
+
+        List<Account> accounts = [SELECT Id, Name FROM Account WITH USER_MODE LIMIT 5];
+//        System.debug('Account records: ' + accounts);
+
+        try {
+            // some code that could throw an exception
+//            SYSTEM.DEBUG('Some Code is Will be here');
+        } catch (Exception e) {
+//            System.debug('An error occurred: ' + e.getMessage());
+        }
     }
 
     public static void sampleDML() {
