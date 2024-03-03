@@ -150,14 +150,15 @@ def set_sharing_option(file_path,sharing_option):
         if line.strip().lower().startswith('public class'):
             lines[i] = lines[i].replace('public class', f'public {sharing_option} sharing class')
             break
-        if line.strip().lower().startswith('private class'):
+        elif line.strip().lower().startswith('private class'):
             lines[i] = lines[i].replace('private class', f'private {sharing_option} sharing class')
             break
 
     # Write the modified lines back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
+    
+    # print("sharing Option Selected: ",sharing_option)
     print(f"\nSharing option set to {sharing_option} Sharing for this class.")
 
 
@@ -248,9 +249,8 @@ def main():
             else:
                 print("Invalid option. Please try again.")
                 continue
-            set_sharing_option(Output_Apex_path, 'with')
             print("\nOutput: ")
-            print("Enforce Sharing Rules Setting")
+            print("Enforced Sharing Rules Setting Successfully")
         elif option == "6" and file_Clear:
             clear_file_content(Input_Apex_path)
             clear_file_content(Output_Apex_path)
