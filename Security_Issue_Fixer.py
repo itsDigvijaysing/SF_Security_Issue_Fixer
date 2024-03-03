@@ -3,12 +3,12 @@ from pathlib import Path
 import shutil
 
 # Relative path
-Input_Apex_path = Path("./file_Sample_apex.cls")
+Input_Apex_path = Path("./file_Input_apex.cls")
 Output_Apex_path = Path("./file_Output_apex.cls")
 FieldsObj_Apex_path = Path("./file_FieldsObj_Apex.txt")
 
 # specify the source file and destination file
-source_file = './file_Sample_apex.cls'
+source_file = './file_Input_apex.cls'
 destination_file = './file_Output_apex.cls'
 
 # use shutil to copy the file
@@ -16,8 +16,8 @@ shutil.copyfile(source_file, destination_file)
 
 # Extracts SOQL queries from an Apex code file. & update the file line items while not replacing the original file.
 # Add WITH USER_MODE at the end of soql query but before ORDER BY or LIMIT & also create new line above the soql query and add the comment with Comment as "SOQL Query Fixed as per Codescan Rule"
-def soql_query_fixer(Output_Apex_path):
-    with open(Output_Apex_path, 'r') as file:
+def soql_query_fixer(file_path):
+    with open(file_path, 'r') as file:
         apex_code = file.read()
         pattern = re.compile(r'Select\s(.*?)\sFrom\s(.*?)(\s*?Where\s.*?)?;', re.IGNORECASE | re.DOTALL)
         queries = []
@@ -136,6 +136,35 @@ def extract_soql_queries(file_path):
                 print(query)
                 file.write(f"{query}\n")
 
+def set_sharing_option(file_path,sharing_option):
+    if sharing_option not in ['with', 'without', 'inherited']:
+        print("Invalid sharing option. Please choose 'with', 'without', or 'inherited'.")
+        return
+
+    # Read the class file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Modify the class definition line
+    for i, line in enumerate(lines):
+        if line.strip().lower().startswith('public class'):
+            lines[i] = lines[i].replace('public class', f'public {sharing_option} sharing class')
+            break
+        if line.strip().lower().startswith('private class'):
+            lines[i] = lines[i].replace('private class', f'private {sharing_option} sharing class')
+            break
+
+    # Write the modified lines back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+    print(f"\nSharing option set to {sharing_option} Sharing for this class.")
+
+
+
+def clear_file_content(file_path):
+    with open(file_path, 'w') as file:
+        file.write('')
 
 # extract_soql_queries(Input_Apex_path)
 # print("-------------------")
@@ -152,6 +181,9 @@ def main():
     fix_soql = True
     fix_dml = True
     comment_debugs = True
+    enforce_sharing_rules = True
+    file_Clear = True
+
 
     while True:
         print("\n\n---------------------------")
@@ -165,7 +197,12 @@ def main():
             print("3. Fix DML operations")
         if comment_debugs:
             print("4. Comment out debugs")
-        print("5. Exit")
+        if enforce_sharing_rules:
+            print("5. Enforce Sharing Rules Setting")
+        if file_Clear:
+            print("6. Clear All Files & Start Fresh")
+        print("0. Exit")
+
         option = input("Enter option number: ")
 
         if option == "1" and extract_queries:
@@ -190,7 +227,38 @@ def main():
             comment_debugs = False
             print("\nOutput: ")
             print("Debugs Commented Out")
-        elif option == "5":
+        elif option == "5" and enforce_sharing_rules:
+            print("-*-*-*-*-*-*-\nSelect Sharing Option: ")
+            print("1. With Sharing\n2. Without Sharing\n3. Inherited Sharing\n0. Back")
+            sharing_option = input("Enter option number: ")
+            if sharing_option == "1":
+                # sharing_option = "with"
+                set_sharing_option(Output_Apex_path, 'with')
+                enforce_sharing_rules = False
+            elif sharing_option == "2":
+                # sharing_option = "without"
+                set_sharing_option(Output_Apex_path, 'without')
+                enforce_sharing_rules = False
+            elif sharing_option == "3":
+                # sharing_option = "inherited"
+                set_sharing_option(Output_Apex_path, 'inherited')
+                enforce_sharing_rules = False
+            elif sharing_option == "0":
+                continue
+            else:
+                print("Invalid option. Please try again.")
+                continue
+            set_sharing_option(Output_Apex_path, 'with')
+            print("\nOutput: ")
+            print("Enforce Sharing Rules Setting")
+        elif option == "6" and file_Clear:
+            clear_file_content(Input_Apex_path)
+            clear_file_content(Output_Apex_path)
+            clear_file_content(FieldsObj_Apex_path)
+            file_Clear = False
+            print("\nOutput: ")
+            print("All Files Cleared & Start Fresh")
+        elif option == "0":
             break
         else:
             print("\nInvalid option. Please try again.")
