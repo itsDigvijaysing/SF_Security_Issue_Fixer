@@ -1,14 +1,33 @@
 # SF_Security_Issue_Fixer
 
-Fixing Salesforce Code Scan Issues
+The Salesforce Security Fixer project aims to enhance the security posture of Salesforce apex code by providing automated tools to fix common security issues and vulnerabilities. This project focuses on addressing various aspects of security, including SOQL query analysis, field-level security, CRUD level security, sharing settings, and debug statement cleanup.
 
 ## Functionality
 
-1. Commenting all System Debugs.
-2. Finding all Fields & Objects of SOQL Query & stored it in file.
-3. Fixing Field Level Security of SOQL Operations by using USER_MODE.
-4. Fixing CRUD Level Security of DML Operations by pre checking access.
-5. Giving `With Sharing` / `Without Sharing` to component as per User Choice. (In Progress)
+`SOQL Query Analysis`: The project includes functionality to parse SOQL queries and identify all fields and objects referenced in them. This information is stored in a output file for further analysis and processing for User.
+
+`Field-Level Security Fixing`: Using the USER_MODE, the project provides the ability to fix field-level security for SOQL operations. This ensures that only authorized users have access to sensitive fields in queries.
+
+`CRUD Level Security Fixing`: Before performing DML operations, the project pre-checks the user's access permissions to ensure that only users with the necessary CRUD (Create, Read, Update, Delete) permissions can perform these operations.
+
+`Sharing Settings`: Users can choose between With, Without, or Inherited sharing settings for components, allowing for granular control over record access.
+
+`Debug Statement Cleanup`: The project includes functionality to automatically comment out all system.debug statements in the code, reducing log size and potential information disclosure.
+
+`File Data Cleanup`: It simplely clears data of it's own file so that Project will stay working without any issue.
+
+## Project Status
+
+As a Developer of this project, I acknowledges that it may contain bugs. Updates and improvements will be considered when time permits, with a focus on improving functionality and reliability.
+
+<!-- ## Functionality
+
+1. Finding all Fields & Objects of SOQL Query & stored it in file.
+2. Fixing Field Level Security of SOQL Operations by using USER_MODE.
+3. Fixing CRUD Level Security of DML Operations by pre checking access.
+4. Giving `With`/`Without`/`Inherited` Sharing to component as per User Choice.
+5. Commenting all the system.debugs lines.
+6. Clearning the Files/Cache data. -->
 
 ## Basic Things to Know
 
