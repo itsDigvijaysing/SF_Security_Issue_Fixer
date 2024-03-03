@@ -53,11 +53,15 @@ def soql_query_fixer(Output_Apex_path):
                 with open(Output_Apex_path, 'w') as file:
                     file.write(apex_code)
 
+
+# Mine: Object_Name.sObjectType.getdescribe().isCreateable()
+# Colleague: sobject.getdescribe().object_name.iscreteable() (Maybe)
+
 # Finds DML operations in an Apex code file & replace it with Codescan Rule
 def dml_operation_fixer(file_path):
     with open(file_path, 'r') as file:
         apex_code = file.read()
-        pattern = re.compile(r'(Insert|Update|Upsert|Delete|Merge|Undelete)\s(.*?);', re.IGNORECASE | re.DOTALL)
+        pattern = re.compile(r'\b(Insert|Update|Upsert|Delete)\b\s(.*?);', re.IGNORECASE | re.DOTALL)
         queries = []
         stack = [apex_code]
         index = 0
@@ -66,15 +70,33 @@ def dml_operation_fixer(file_path):
             current_code = stack.pop()
             for match in pattern.finditer(current_code):
                 dml_operation = match.group(1)
-                obj = match.group(2)
+                obj_instance = match.group(2)
                 query = match.group(0)
-                query = f"// DML Operation Fixed as per Codescan Rule\n{query}"
-                nested_code = match.group(0).split(dml_operation, 1)[-1].rsplit(obj, 1)[0]
-                stack.append(nested_code.strip())
+                # query = f"// DML Operation Fixed as per Codescan Rule\n{query}"
+                print("DML Operation:", dml_operation)
+                print("Object:", obj_instance)
+                if(dml_operation.lower() == "insert"):
+                    # print("1-------------------")
+                    query = f"if(Object_Name.sObjectType.getdescribe().isCreateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to create a new Object_Name.');\n\t\t}}"
+                    # print("Inside Insert")
+                    # print(query)
+                if(dml_operation.lower() == "update"):
+                    # print("2-------------------")
+                    query = f"if(Object_Name.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to update the Object_Name.');\n\t\t}}"
+                    # print("Inside Update")
+                if(dml_operation.lower() == "upsert"):
+                    # print("3-------------------")
+                    query = f"if(Object_Name.sObjectType.getdescribe().isCreateable() && Object_Name.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to upsert the Object_Name.');\n\t\t}}"
+                    # print("Inside Upsert")
+                if(dml_operation.lower() == "delete"):
+                    # print("4-------------------")
+                    query = f"if(Object_Name.sObjectType.getdescribe().isDeleteable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to delete the Object_Name.');\n\t\t}}"
+                    # print("Inside Delete")
+                # nested_code = match.group(0).split(dml_operation, 1)[-1].rsplit(obj_instance, 1)[0]
+                # stack.append(nested_code.strip())
                 apex_code = apex_code.replace(match.group(0), query)
                 with open(file_path, 'w') as file:
                     file.write(apex_code)
-
 
 def comment_out_debugs(file_path):
     with open(file_path, 'r') as file:
@@ -86,28 +108,6 @@ def comment_out_debugs(file_path):
                 # print("In 1st Scenario ",line)
                 line = '//' + line
             file.write(line)
-
-# Mine: Object_Name.sObjectType.getdescribe().isCreateable()
-# Colleague: sobject.getdescribe().object_name.iscreteable() (Maybe)
-
-
-# if(Object_Name.sObjectType.getdescribe().isCreateable()){
-#     # check the field
-# }else{
-#     variable_name.adderror('You do not have permission to create a new Object_Name.');
-# }
-
-# if(Object_Name.sObjectType.getdescribe().isUpdateable()){
-#     # Update object
-# }else{
-#     variable_name.adderror('You do not have permission to update the Object_Name.');
-# }
-
-# if(Object_Name.sObjectType.getdescribe().isDeletable()){
-#     # Delete object
-# }else{
-#     variable_name.adderror('You do not have permission to delete the Object_Name.');
-# }
 
 # Extracts SOQL queries from an Apex code file.
 def extract_soql_queries(file_path):
@@ -126,35 +126,74 @@ def extract_soql_queries(file_path):
                 queries.append({'fields': fields.strip().split(','), 'object': obj.strip()})
                 nested_code = match.group(0).split('SELECT', 1)[-1].rsplit('FROM', 1)[0]
                 stack.append(nested_code.strip())
-        return queries
+        # return queries
+        # open the file in write mode and write each item on a new line
+        with open(FieldsObj_Apex_path, 'w') as file:  # move file opening outside the loop
+            for query in queries:
+                query['fields'] = [field.replace("SELECT", "") for field in query['fields']]
+                # print("Fields:", query['fields'])
+                # print("Object:", query['object'])
+                print(query)
+                file.write(f"{query}\n")
 
-soql_queries = extract_soql_queries(Input_Apex_path)
-print("-------------------")
-soql_query_fixer(Output_Apex_path)
-print("-------")
-comment_out_debugs(Output_Apex_path)
 
-# open the file in write mode and write each item on a new line
-with open(FieldsObj_Apex_path, 'w') as file:  # move file opening outside the loop
-    for query in soql_queries:
-        query['fields'] = [field.replace("SELECT", "") for field in query['fields']]
-        # print("Fields:", query['fields'])
-        # print("Object:", query['object'])
-        print(query)
-        file.write(f"{query}\n")
-        
-        # Created a condition so that Order by, Limit and other where clause condition present in query then it will remove the right side of query and write it to the file
-        # if "Order By" in query['object'] or "ORDER BY" in query['object'] or "order by" in query['object']:
-        #     query = query['object'].split("Order By")[0]
-        #     print("Order By")
-        #     print(query)
-        #     file.write(f"{query}\n")
-        # elif "Limit" in query['object'] or "limit" in query['object'] or "LIMIT" in query['object']:
-        #     query = query['object'].split("Limit")[0]
-        #     print("Limit")
-        #     print(query)
-        #     file.write(f"{query}\n")
-        # else:
-        #     print("Normal")
-        #     print(query)
-        #     file.write(f"{query}\n")
+# extract_soql_queries(Input_Apex_path)
+# print("-------------------")
+# soql_query_fixer(Output_Apex_path)
+# print("-------------------")
+# comment_out_debugs(Output_Apex_path)
+# print("-------------------")
+# dml_operation_fixer(Output_Apex_path)
+# print("-------------------")
+
+def main():
+    
+    extract_queries = True
+    fix_soql = True
+    fix_dml = True
+    comment_debugs = True
+
+    while True:
+        print("\n\n---------------------------")
+        print("Select an option:")
+        print("---------------------------")
+        if extract_queries:
+            print("1. Extract SOQL queries")
+        if fix_soql:
+            print("2. Fix SOQL queries")
+        if fix_dml:
+            print("3. Fix DML operations")
+        if comment_debugs:
+            print("4. Comment out debugs")
+        print("5. Exit")
+        option = input("Enter option number: ")
+
+        if option == "1" and extract_queries:
+            extract_soql_queries(Input_Apex_path)
+            extract_queries = False
+            print("\nOutput: ")
+            print("Fields & Obj Information of SOQL Queries stored in File")
+        elif option == "2" and fix_soql:
+            soql_query_fixer(Output_Apex_path)
+            fix_soql = False
+            print("\nOutput: ")
+            print("SOQL Queries Fixed as per Codescan Rule")
+            print("Used WITH USER_MODE at the end of soql query but before ORDER BY or LIMIT")
+        elif option == "3" and fix_dml:
+            dml_operation_fixer(Output_Apex_path)
+            fix_dml = False
+            print("\nOutput: ")
+            print("DML Operations Fixed as per Codescan Rule")
+            print("Checked for CRUD Permission before DML Operations")
+        elif option == "4" and comment_debugs:
+            comment_out_debugs(Output_Apex_path)
+            comment_debugs = False
+            print("\nOutput: ")
+            print("Debugs Commented Out")
+        elif option == "5":
+            break
+        else:
+            print("\nInvalid option. Please try again.")
+
+if __name__ == "__main__":
+    main()
