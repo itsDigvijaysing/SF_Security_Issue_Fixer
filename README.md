@@ -5,9 +5,10 @@ Fixing Salesforce Code Scan Issues
 ## Functionality
 
 1. Commenting all System Debugs.
-2. Fixing Field Level Security of SOQL Operations by using USER_MODE.
-3. Fixing CRUD Level Security of DML Operations by pre checking access.
-4. Giving `With Sharing` / `Without Sharing` to component as per User Choice. (In Progress)
+2. Finding all Fields & Objects of SOQL Query & stored it in file.
+3. Fixing Field Level Security of SOQL Operations by using USER_MODE.
+4. Fixing CRUD Level Security of DML Operations by pre checking access.
+5. Giving `With Sharing` / `Without Sharing` to component as per User Choice. (In Progress)
 
 ## Basic Things to Know
 
