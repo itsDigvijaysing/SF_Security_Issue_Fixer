@@ -1,5 +1,5 @@
 # Salesforce Apex Code Sample for Testing Correct Output
-public class Sample_apex {
+private inherited sharing class   Sample_apex {
     public static void updateAccountCustomField(List<Opportunity> opportunities) {
         Set<Id> accountIds = new Set<Id>();
         for (Opportunity opp : opportunities) {
@@ -21,11 +21,7 @@ public class Sample_apex {
             acc.Last_Opportunity_Amount__c = accountIdToAmountMap.get(acc.Id);
         }
 
-        if(Object_Name.sObjectType.getdescribe().isUpdateable()){
-			update accountsToUpdate;
-		}else{
-			accountsToUpdate.adderror('You do not have permission to update the Object_Name.');
-		}
+        update accountsToUpdate;
     }
 
     public static void sampleSOQL() {
@@ -35,7 +31,7 @@ public class Sample_apex {
         Contact[] contacts = [SELECT Id, Name FROM Contact 
                             WHERE AccountId IN :accountIds];
 
-        public class AccountController {
+        public with sharing class AccountController {
             public List<Account> getRecentAccounts() {
                 return [SELECT Id, Name, CreatedDate FROM Account WHERE ORDER BY CreatedDate DESC LIMIT 5];
             }
@@ -73,25 +69,9 @@ public class Sample_apex {
         List<Lead> LeadUpsert = new List<Lead>();
 
         // Sample DML
-        if(Object_Name.sObjectType.getdescribe().isCreateable()){
-			insert AccountInsert;
-		}else{
-			AccountInsert.adderror('You do not have permission to create a new Object_Name.');
-		}
-        if(Object_Name.sObjectType.getdescribe().isUpdateable()){
-			update CaseUpdate;
-		}else{
-			CaseUpdate.adderror('You do not have permission to update the Object_Name.');
-		}
-        if(Object_Name.sObjectType.getdescribe().isDeleteable()){
-			delete OppDelete;
-		}else{
-			OppDelete.adderror('You do not have permission to delete the Object_Name.');
-		}
-        if(Object_Name.sObjectType.getdescribe().isCreateable() && Object_Name.sObjectType.getdescribe().isUpdateable()){
-			upsert  LeadUpsert;
-		}else{
-			 LeadUpsert.adderror('You do not have permission to upsert the Object_Name.');
-		}
+        insert AccountInsert;
+        update CaseUpdate;
+        delete OppDelete;
+        upsert  LeadUpsert;
     }
 }

@@ -1,5 +1,5 @@
 # Salesforce Apex Code Sample for Testing Correct Output
-public class Sample_apex {
+private class   Sample_apex {
     public static void updateAccountCustomField(List<Opportunity> opportunities) {
         Set<Id> accountIds = new Set<Id>();
         for (Opportunity opp : opportunities) {
@@ -72,6 +72,6 @@ public class Sample_apex {
         insert AccountInsert;
         update CaseUpdate;
         delete OppDelete;
-        upsert LeadUpsert;
+        upsert  LeadUpsert;
     }
 }
