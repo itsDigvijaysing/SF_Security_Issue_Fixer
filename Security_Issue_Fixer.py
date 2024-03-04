@@ -54,9 +54,6 @@ def soql_query_fixer(file_path):
                     file.write(apex_code)
 
 
-# Mine: Object_Name.sObjectType.getdescribe().isCreateable()
-# Colleague: sobject.getdescribe().object_name.iscreteable() (Maybe)
-
 # Finds DML operations in an Apex code file & replace it with Codescan Rule
 def dml_operation_fixer(file_path):
     with open(file_path, 'r') as file:
@@ -77,20 +74,20 @@ def dml_operation_fixer(file_path):
                 print("Object:", obj_instance)
                 if(dml_operation.lower() == "insert"):
                     # print("1-------------------")
-                    query = f"if(Object_Name.sObjectType.getdescribe().isCreateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to create a new Object_Name.');\n\t\t}}"
+                    query = f"if(<Object_Name>.sObjectType.getdescribe().isCreateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to create a new Object_Name.');\n\t\t}}"
                     # print("Inside Insert")
                     # print(query)
                 if(dml_operation.lower() == "update"):
                     # print("2-------------------")
-                    query = f"if(Object_Name.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to update the Object_Name.');\n\t\t}}"
+                    query = f"if(<Object_Name>.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to update the Object_Name.');\n\t\t}}"
                     # print("Inside Update")
                 if(dml_operation.lower() == "upsert"):
                     # print("3-------------------")
-                    query = f"if(Object_Name.sObjectType.getdescribe().isCreateable() && Object_Name.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to upsert the Object_Name.');\n\t\t}}"
+                    query = f"if(<Object_Name>.sObjectType.getdescribe().isCreateable() && Object_Name.sObjectType.getdescribe().isUpdateable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to upsert the Object_Name.');\n\t\t}}"
                     # print("Inside Upsert")
                 if(dml_operation.lower() == "delete"):
                     # print("4-------------------")
-                    query = f"if(Object_Name.sObjectType.getdescribe().isDeleteable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to delete the Object_Name.');\n\t\t}}"
+                    query = f"if(<Object_Name>.sObjectType.getdescribe().isDeleteable()){{\n\t\t\t{query}\n\t\t}}else{{\n\t\t\t{obj_instance}.adderror('You do not have permission to delete the Object_Name.');\n\t\t}}"
                     # print("Inside Delete")
                 # nested_code = match.group(0).split(dml_operation, 1)[-1].rsplit(obj_instance, 1)[0]
                 # stack.append(nested_code.strip())
