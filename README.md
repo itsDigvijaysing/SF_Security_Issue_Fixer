@@ -29,6 +29,10 @@ As a Developer of this project, I acknowledges that it may contain bugs. Updates
 5. Commenting all the system.debugs lines.
 6. Clearning the Files/Cache data. -->
 
+---
+
+---
+
 ## Basic Things to Know
 
 ```sql
