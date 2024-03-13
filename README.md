@@ -33,6 +33,8 @@ As a Developer of this project, I acknowledges that it may contain bugs. Updates
 
 ---
 
+---
+
 ## Basic Things to Know
 
 ```sql
