@@ -7,6 +7,15 @@ function App() {
   const [output, setOutput] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
+  // State for the checkboxes
+  const [checkboxes, setCheckboxes] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false,
+    checkbox5: false,
+  });
+
   useEffect(() => {
     const fetchOutput = async () => {
       try {
@@ -19,6 +28,15 @@ function App() {
     };
     fetchOutput();
   }, [submitted]);
+
+  // Handle changes to checkboxes
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setCheckboxes((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,20 +68,50 @@ function App() {
               style={{ height: "45vh", width: "15vw", marginRight: "10px" }}
             ></textarea>
             <div style={{ margin: "20px" }}>
-              <input type="checkbox" id="checkbox1" name="checkbox1" />
+              <input
+                type="checkbox"
+                id="checkbox1"
+                name="checkbox1"
+                checked={checkboxes.checkbox1}
+                onChange={handleCheckboxChange}
+              />
               <label htmlFor="checkbox1">Fix SOQL FLS</label>
               <br />
-              <input type="checkbox" id="checkbox2" name="checkbox2" />
+              <input
+                type="checkbox"
+                id="checkbox2"
+                name="checkbox2"
+                checked={checkboxes.checkbox2}
+                onChange={handleCheckboxChange}
+              />
               <label htmlFor="checkbox2">Fix DML FLS</label>
               <br />
-              <input type="checkbox" id="checkbox3" name="checkbox3" />
+              <input
+                type="checkbox"
+                id="checkbox3"
+                name="checkbox3"
+                checked={checkboxes.checkbox3}
+                onChange={handleCheckboxChange}
+              />
               <label htmlFor="checkbox3">Enforce Sharing Rule</label>
               <br />
-              <input type="checkbox" id="checkbox4" name="checkbox3" />
-              <label htmlFor="checkbox3">Comment Debugs</label>
+              <input
+                type="checkbox"
+                id="checkbox4"
+                name="checkbox4"
+                checked={checkboxes.checkbox4}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor="checkbox4">Comment Debugs</label>
               <br />
-              <input type="checkbox" id="checkbox5" name="checkbox3" />
-              <label htmlFor="checkbox3">Extract SOQL Queries</label>
+              <input
+                type="checkbox"
+                id="checkbox5"
+                name="checkbox5"
+                checked={checkboxes.checkbox5}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor="checkbox5">Extract SOQL Queries</label>
             </div>
             <textarea
               value={output}
