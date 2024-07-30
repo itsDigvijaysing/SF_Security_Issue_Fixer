@@ -9,12 +9,14 @@ function App() {
 
   // State for the checkboxes
   const [checkboxes, setCheckboxes] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: false,
-    checkbox5: false,
+    fsoql: false,
+    fdml: false,
+    fshr: false,
+    fcmt: false,
+    esoql: false,
   });
+
+  const [selectedPicklist, setSelectedPicklist] = useState("");
 
   useEffect(() => {
     const fetchOutput = async () => {
@@ -26,7 +28,9 @@ function App() {
         console.error("There was an error fetching the output file:", error);
       }
     };
-    fetchOutput();
+    if (submitted) {
+      fetchOutput();
+    }
   }, [submitted]);
 
   // Handle changes to checkboxes
@@ -38,12 +42,20 @@ function App() {
     }));
   };
 
+  const handlePicklistChange = (e) => {
+    setSelectedPicklist(e.target.value);
+    console.log("Picklist selected:", e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:5000/submit-code", {
         code,
+        checkboxes,
+        selectedPicklist,
       });
+      console.log("checkboxes", checkboxes);
       console.log("Code submitted successfully:", response.data);
       setSubmitted(!submitted); // Toggle the submitted state to trigger useEffect
     } catch (error) {
@@ -54,7 +66,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Code Submitter</h1>
+        <h1>Salesforce Security Fixer</h1>
+
         <form onSubmit={handleSubmit}>
           <div
             style={{
@@ -65,63 +78,85 @@ function App() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Enter your code here"
-              style={{ height: "45vh", width: "15vw", marginRight: "10px" }}
+              style={{ height: "70vh", width: "35vw", marginRight: "10px" }}
             ></textarea>
             <div style={{ margin: "20px" }}>
               <input
                 type="checkbox"
-                id="checkbox1"
-                name="checkbox1"
-                checked={checkboxes.checkbox1}
+                id="fsoql"
+                name="fsoql"
+                checked={checkboxes.fsoql}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="checkbox1">Fix SOQL FLS</label>
+              <label htmlFor="fsoql">Fix SOQL FLS</label>
               <br />
               <input
                 type="checkbox"
-                id="checkbox2"
-                name="checkbox2"
-                checked={checkboxes.checkbox2}
+                id="fdml"
+                name="fdml"
+                checked={checkboxes.fdml}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="checkbox2">Fix DML FLS</label>
+              <label htmlFor="fdml">Fix DML FLS</label>
               <br />
               <input
                 type="checkbox"
-                id="checkbox3"
-                name="checkbox3"
-                checked={checkboxes.checkbox3}
+                id="fshr"
+                name="fshr"
+                checked={checkboxes.fshr}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="checkbox3">Enforce Sharing Rule</label>
+              <label htmlFor="fshr">Enforce Sharing Rule</label>
+              <br />
+              <div>
+                <select
+                  htmlFor="picklist"
+                  id="picklist"
+                  value={selectedPicklist}
+                  onChange={handlePicklistChange}
+                >
+                  <option value="">Select Sharing</option>
+                  <option value="with" onChange={handlePicklistChange}>
+                    With Sharing
+                  </option>
+                  <option value="without" onChange={handlePicklistChange}>
+                    Without Sharing
+                  </option>
+                  <option value="inherited" onChange={handlePicklistChange}>
+                    Inherited Sharing
+                  </option>
+                </select>
+              </div>
               <br />
               <input
                 type="checkbox"
-                id="checkbox4"
-                name="checkbox4"
-                checked={checkboxes.checkbox4}
+                id="fcmt"
+                name="fcmt"
+                checked={checkboxes.fcmt}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="checkbox4">Comment Debugs</label>
+              <label htmlFor="fcmt">Comment Debugs</label>
               <br />
               <input
                 type="checkbox"
-                id="checkbox5"
-                name="checkbox5"
-                checked={checkboxes.checkbox5}
+                id="esoql"
+                name="esoql"
+                checked={checkboxes.esoql}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="checkbox5">Extract SOQL Queries</label>
+              <label htmlFor="esoql">Extract SOQL Queries</label>
             </div>
             <textarea
               value={output}
               readOnly
               placeholder="Output will be displayed here"
-              style={{ height: "45vh", width: "15vw" }}
+              style={{ height: "70vh", width: "35vw" }}
             ></textarea>
             <br />
           </div>
           <div style={{ alignSelf: "center" }}>
+            App Development still Inprogress
+            <br />
             <button type="submit">Submit Code</button>
           </div>
         </form>
