@@ -1,1 +1,43 @@
-123 testing
+public inherited sharing class AccountHandler {
+    // Method to process accounts
+    public static void processAccounts() {
+        // Perform a SOQL query to fetch accounts with a rating of 'Hot'
+        List<Account> hotAccounts = [SELECT Id, Name FROM Account WHERE Rating = 'Hot'];
+        
+        // Debug the list of accounts fetched
+//        System.debug('Hot Accounts: ' + hotAccounts);
+        
+        // Create a list to hold accounts that will be updated
+        List<Account> accountsToUpdate = new List<Account>();
+        
+        // Loop through the fetched accounts
+        for (Account acc : hotAccounts) {
+            // if(<Object_Name>.sObjectType.getdescribe().isUpdateable()){
+			Update the account name to indicate it's being processed
+            acc.Name = acc.Name + ' - Processed';
+		}else{
+			the account name to indicate it's being processed
+            acc.Name = acc.Name + ' - Processed'.adderror('You do not have permission to update the Object_Name.');
+		}
+            
+            // Add the account to the list of accounts to be updated
+            accountsToUpdate.add(acc);
+        }
+        
+        // Perform a DML operation to if(<Object_Name>.sObjectType.getdescribe().isUpdateable()){
+			update the accounts
+        if (!accountsToUpdate.isEmpty()) {
+            update accountsToUpdate;
+		}else{
+			the accounts
+        if (!accountsToUpdate.isEmpty()) {
+            update accountsToUpdate.adderror('You do not have permission to update the Object_Name.');
+		}
+            
+            // Debug the result of the DML operation
+//            System.debug('Updated Accounts: ' + accountsToUpdate);
+        } else {
+//            System.debug('No accounts to update.');
+        }
+    }
+}
