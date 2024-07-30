@@ -1,6 +1,6 @@
 # Salesforce Security Issues Fixer
 
-The Salesforce Security Fixer project aims to enhance the security posture of Salesforce apex code by providing automated tools to fix common security issues and vulnerabilities. This project focuses on addressing various aspects of security, including SOQL query analysis, field-level security, CRUD level security, sharing settings, and debug statement cleanup.
+The Salesforce Security Fixer project enhances Salesforce Apex code security by automating the resolution of common vulnerabilities. Utilizing a Flask server for backend processing and a React frontend for user interaction, the tool addresses critical security aspects such as SOQL query analysis, field-level security (FLS), CRUD level security, sharing settings, and debug statement cleanup. It modifies SOQL queries and DML operations to comply with best practices, configures class sharing settings, and comments out debug statements to protect sensitive information, providing a comprehensive solution for securing Salesforce code.
 
 ## Functionality
 
@@ -16,10 +16,6 @@ The Salesforce Security Fixer project aims to enhance the security posture of Sa
 
 `File Data Cleanup`: It simplely clears data of it's own file so that Project will stay working without any issue.
 
-## Project Status
-
-As a Developer of this project, I acknowledges that it may contain bugs. Updates and improvements will be considered when time permits, with a focus on improving functionality and reliability.
-
 <!-- ## Functionality
 
 1. Finding all Fields & Objects of SOQL Query & stored it in file.
@@ -31,7 +27,47 @@ As a Developer of this project, I acknowledges that it may contain bugs. Updates
 
 ---
 
+## Working Details:
+
+**Enhancing Salesforce Security with a Flask and React Application**
+
+In the world of Salesforce development, maintaining code security and compliance is paramount. The Salesforce Security Issue Fixer project is an innovative solution designed to address common security issues in Salesforce code through a web application powered by Flask and React.
+
+**Backend: Flask Server**
+
+At the core of this solution is a Flask server, which provides a robust backend for processing Salesforce code. The server exposes two main endpoints:
+
+1. **/submit-code**: This endpoint accepts POST requests containing Salesforce code along with various operations selected by the user. The server processes the code based on the selected operations, which include fixing SOQL queries, adjusting DML operations, commenting out debug statements, and setting sharing options. It then writes the processed code to a file and returns a success message. If any errors occur during processing, the server responds with an error message.
+
+2. **/output-file**: This endpoint allows users to download the processed code file. It serves the `output_code.txt` file created during the code submission process, enabling users to easily retrieve and review the modified code.
+
+The `main_script` module contains functions to handle specific code fixes:
+
+- **`soql_query_fixer`**: Adjusts SOQL queries to ensure they comply with best practices.
+- **`dml_operation_fixer`**: Modifies DML operations to include appropriate permissions checks.
+- **`comment_out_debugs`**: Comments out debug statements to enhance security.
+- **`set_sharing_option`**: Configures sharing options for Salesforce classes based on user input.
+
+**Frontend: React Application**
+
+The React frontend provides an intuitive user interface for interacting with the Flask server. Users can input their Salesforce code, select the desired operations via checkboxes, and specify sharing options through a dropdown menu. The application manages state with React hooks and communicates with the Flask server using Axios for HTTP requests.
+
+Key features of the React app include:
+
+- **Code Input and Output Display**: Users can enter their code into a text area and view the processed output in real-time.
+- **Checkboxes for Operations**: Users can select which operations to apply, including fixes for SOQL queries, DML operations, debug statements, and sharing options.
+- **Dynamic Sharing Options**: A dropdown menu allows users to choose the sharing settings for their Salesforce classes.
+- **File Download**: Once the code is processed, users can download the output file containing the modified code.
+
+**Conclusion**
+
+The Salesforce Security Issue Fixer project is a practical tool for developers seeking to enhance the security and compliance of their Salesforce code. By leveraging Flask for backend processing and React for a user-friendly frontend, this project offers a comprehensive solution for addressing common Salesforce security issues efficiently.
+
 ---
+
+## Project Status
+
+As a Developer of this project, I acknowledges that it may contain bugs. Updates and improvements will be considered when time permits, with a focus on improving functionality and reliability.
 
 ---
 
