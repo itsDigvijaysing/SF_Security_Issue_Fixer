@@ -73,48 +73,45 @@ function App() {
       <header className="App-header">
         <h1>Salesforce Security Fixer</h1>
         <form onSubmit={handleSubmit}>
-          <div
-            style={{
-              display: "flex",
-            }}
-          >
+          <div className="form-container">
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Enter your code here"
-              style={{ height: "70vh", width: "35vw", marginRight: "10px" }}
+              className="textarea-code"
             ></textarea>
-            <div style={{ margin: "20px" }}>
-              <input
-                type="checkbox"
-                id="fsoql"
-                name="fsoql"
-                checked={checkboxes.fsoql}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="fsoql">Fix SOQL FLS</label>
-              <br />
-              <input
-                type="checkbox"
-                id="fdml"
-                name="fdml"
-                checked={checkboxes.fdml}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="fdml">Fix DML FLS</label>
-              <br />
-              <input
-                type="checkbox"
-                id="fshr"
-                name="fshr"
-                checked={checkboxes.fshr}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="fshr">Enforce Sharing Rule</label>
-              <br />
-              <div>
+            <div className="options-container">
+              <div className="checkbox-container">
+                <input
+                  type="checkbox"
+                  id="fsoql"
+                  name="fsoql"
+                  checked={checkboxes.fsoql}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="fsoql">Fix SOQL FLS</label>
+                <br />
+                <input
+                  type="checkbox"
+                  id="fdml"
+                  name="fdml"
+                  checked={checkboxes.fdml}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="fdml">Fix DML FLS</label>
+                <br />
+                <input
+                  type="checkbox"
+                  id="fshr"
+                  name="fshr"
+                  checked={checkboxes.fshr}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="fshr">Enforce Sharing Rule</label>
+                <br />
+              </div>
+              <div className="picklist-container">
                 <select
-                  htmlFor="picklist"
                   id="picklist"
                   value={selectedPicklist}
                   onChange={handlePicklistChange}
@@ -125,42 +122,33 @@ function App() {
                   <option value="inherited">Inherited Sharing</option>
                 </select>
               </div>
-              <br />
-              <input
-                type="checkbox"
-                id="fcmt"
-                name="fcmt"
-                checked={checkboxes.fcmt}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="fcmt">Comment Debugs</label>
-              <br />
-              <input
-                type="checkbox"
-                id="esoql"
-                name="esoql"
-                checked={checkboxes.esoql}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="esoql">Extract SOQL Queries</label>
+              <div className="checkbox-container">
+                <input
+                  type="checkbox"
+                  id="fcmt"
+                  name="fcmt"
+                  checked={checkboxes.fcmt}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="fcmt">Comment Debugs</label>
+                <br />
+                <input
+                  type="checkbox"
+                  id="esoql"
+                  name="esoql"
+                  checked={checkboxes.esoql}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="esoql">Extract SOQL Queries</label>
+              </div>
             </div>
             <textarea
               value={output}
               readOnly
               placeholder="Output will be displayed here"
-              style={{ height: "70vh", width: "35vw" }}
+              className="textarea-output"
             ></textarea>
-            <br />
           </div>
-          <div style={{ alignSelf: "center" }}>
-            App Development still Inprogress
-            <br />
-            <button type="submit">Submit Code</button>
-          </div>
-        </form>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+          <div className="submit-container">
+            <p>App Development still In progress</p>
+            <button type="submit" className="submit-bu
