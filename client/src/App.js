@@ -3,13 +3,9 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  // State to hold the code input by the user
   const [code, setCode] = useState("");
-  // State to hold the output received from the server
   const [output, setOutput] = useState("");
-  // State to track if the form has been submitted
   const [submitted, setSubmitted] = useState(false);
-  // State for the checkboxes
   const [checkboxes, setCheckboxes] = useState({
     fsoql: false,
     fdml: false,
@@ -17,18 +13,15 @@ function App() {
     fcmt: false,
     esoql: false,
   });
-  // State for the selected picklist option
   const [selectedPicklist, setSelectedPicklist] = useState("");
 
-  // useEffect hook to fetch the output file when the form is submitted
   useEffect(() => {
     const fetchOutput = async () => {
       try {
-        console.log("Fetching output file...");
         const response = await axios.get("http://localhost:5000/output-file");
         setOutput(response.data);
       } catch (error) {
-        console.error("There was an error fetching the output file:", error);
+        console.error("Error fetching output file:", error);
       }
     };
     if (submitted) {
@@ -36,7 +29,6 @@ function App() {
     }
   }, [submitted]);
 
-  // Handle changes to checkboxes
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setCheckboxes((prevState) => ({
@@ -45,13 +37,10 @@ function App() {
     }));
   };
 
-  // Handle changes to the picklist
   const handlePicklistChange = (e) => {
     setSelectedPicklist(e.target.value);
-    console.log("Picklist selected:", e.target.value);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -60,12 +49,19 @@ function App() {
         checkboxes,
         selectedPicklist,
       });
-      console.log("checkboxes", checkboxes);
-      console.log("Code submitted successfully:", response.data);
-      setSubmitted(!submitted); // Toggle the submitted state to trigger useEffect
+      setSubmitted(true);
     } catch (error) {
-      console.error("There was an error submitting the code:", error);
+      console.error("Error submitting code:", error);
     }
+  };
+
+  const handleDownload = () => {
+    const element = document.createElement("a");
+    const file = new Blob([output], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = "output.txt";
+    document.body.appendChild(element);
+    element.click();
   };
 
   return (
@@ -82,37 +78,36 @@ function App() {
             ></textarea>
             <div className="options-container">
               <div className="checkbox-container">
-                <input
-                  type="checkbox"
-                  id="fsoql"
-                  name="fsoql"
-                  checked={checkboxes.fsoql}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="fsoql">Fix SOQL FLS</label>
-                <br />
-                <input
-                  type="checkbox"
-                  id="fdml"
-                  name="fdml"
-                  checked={checkboxes.fdml}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="fdml">Fix DML FLS</label>
-                <br />
-                <input
-                  type="checkbox"
-                  id="fshr"
-                  name="fshr"
-                  checked={checkboxes.fshr}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="fshr">Enforce Sharing Rule</label>
-                <br />
+                <label>
+                  <input
+                    type="checkbox"
+                    name="fsoql"
+                    checked={checkboxes.fsoql}
+                    onChange={handleCheckboxChange}
+                  />
+                  Fix SOQL FLS
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="fdml"
+                    checked={checkboxes.fdml}
+                    onChange={handleCheckboxChange}
+                  />
+                  Fix DML FLS
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="fshr"
+                    checked={checkboxes.fshr}
+                    onChange={handleCheckboxChange}
+                  />
+                  Enforce Sharing Rule
+                </label>
               </div>
               <div className="picklist-container">
                 <select
-                  id="picklist"
                   value={selectedPicklist}
                   onChange={handlePicklistChange}
                 >
@@ -123,23 +118,24 @@ function App() {
                 </select>
               </div>
               <div className="checkbox-container">
-                <input
-                  type="checkbox"
-                  id="fcmt"
-                  name="fcmt"
-                  checked={checkboxes.fcmt}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="fcmt">Comment Debugs</label>
-                <br />
-                <input
-                  type="checkbox"
-                  id="esoql"
-                  name="esoql"
-                  checked={checkboxes.esoql}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="esoql">Extract SOQL Queries</label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="fcmt"
+                    checked={checkboxes.fcmt}
+                    onChange={handleCheckboxChange}
+                  />
+                  Comment Debugs
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="esoql"
+                    checked={checkboxes.esoql}
+                    onChange={handleCheckboxChange}
+                  />
+                  Extract SOQL Queries
+                </label>
               </div>
             </div>
             <textarea
@@ -151,4 +147,21 @@ function App() {
           </div>
           <div className="submit-container">
             <p>App Development still In progress</p>
-            <button type="submit" className="submit-bu
+            <button type="submit" className="submit-button">
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={handleDownload}
+              className="download-button"
+            >
+              Download
+            </button>
+          </div>
+        </form>
+      </header>
+    </div>
+  );
+}
+
+export default App;
