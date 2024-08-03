@@ -3,10 +3,12 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+  // State to hold the code input by the user
   const [code, setCode] = useState("");
+  // State to hold the output received from the server
   const [output, setOutput] = useState("");
+  // State to track if the form has been submitted
   const [submitted, setSubmitted] = useState(false);
-
   // State for the checkboxes
   const [checkboxes, setCheckboxes] = useState({
     fsoql: false,
@@ -15,9 +17,10 @@ function App() {
     fcmt: false,
     esoql: false,
   });
-
+  // State for the selected picklist option
   const [selectedPicklist, setSelectedPicklist] = useState("");
 
+  // useEffect hook to fetch the output file when the form is submitted
   useEffect(() => {
     const fetchOutput = async () => {
       try {
@@ -42,11 +45,13 @@ function App() {
     }));
   };
 
+  // Handle changes to the picklist
   const handlePicklistChange = (e) => {
     setSelectedPicklist(e.target.value);
     console.log("Picklist selected:", e.target.value);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -67,7 +72,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Salesforce Security Fixer</h1>
-
         <form onSubmit={handleSubmit}>
           <div
             style={{
@@ -116,15 +120,9 @@ function App() {
                   onChange={handlePicklistChange}
                 >
                   <option value="">Select Sharing</option>
-                  <option value="with" onChange={handlePicklistChange}>
-                    With Sharing
-                  </option>
-                  <option value="without" onChange={handlePicklistChange}>
-                    Without Sharing
-                  </option>
-                  <option value="inherited" onChange={handlePicklistChange}>
-                    Inherited Sharing
-                  </option>
+                  <option value="with">With Sharing</option>
+                  <option value="without">Without Sharing</option>
+                  <option value="inherited">Inherited Sharing</option>
                 </select>
               </div>
               <br />
