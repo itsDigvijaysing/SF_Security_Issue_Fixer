@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SF Security Issue Fixer",
+  "name": "The Salesforce Security Fixer project enhances Salesforce Apex code security by automating the resolution of common vulnerabilities. ",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "Apex-Salesforce.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "Apex-Salesforce.png",
       "type": "image/png",
       "sizes": "512x512"
     }

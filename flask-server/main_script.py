@@ -24,35 +24,6 @@ def soql_query_fixer(apex_code):
         fixed_code = fixed_code.replace(match.group(0), query)
     return fixed_code
 
-def submit_code():
-    data = request.get_json()
-    code = data.get('code')
-    operations = data.get('checkboxes', {})
-    shrType = data.get('selectedPicklist')
-    
-    if not code:
-        return jsonify({'error': 'No code provided'}), 400
-
-    try:
-        fixed_code = process_code(code, operations, shrType)
-        write_to_file('output_code.txt', fixed_code)
-        return jsonify({'message': 'Code processed successfully'}), 200
-    except Exception as e:
-        logging.error(f"Error processing code: {e}")
-        return jsonify({'error': str(e)}), 500
-
-def process_code(code, operations, shrType):
-    fixed_code = code
-    if operations.get('fsoql'):
-        fixed_code = main_script.soql_query_fixer(fixed_code)
-    if operations.get('fdml'):
-        fixed_code = main_script.dml_operation_fixer(fixed_code)
-    if operations.get('fcmt'):
-        fixed_code = main_script.comment_out_debugs(fixed_code)
-    if operations.get('fshr') and shrType:
-        fixed_code = main_script.set_sharing_option(fixed_code, shrType)
-    return fixed_code
-
 def write_to_file(filename, content):
     with open(filename, 'w') as file:
         file.write(content)
