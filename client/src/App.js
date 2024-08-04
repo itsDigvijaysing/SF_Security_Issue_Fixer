@@ -15,6 +15,7 @@ function App() {
   });
   const [selectedPicklist, setSelectedPicklist] = useState("");
 
+  // Fetch output when form is submitted
   useEffect(() => {
     const fetchOutput = async () => {
       try {
@@ -29,6 +30,7 @@ function App() {
     }
   }, [submitted]);
 
+  // Handle checkbox changes
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setCheckboxes((prevState) => ({
@@ -37,10 +39,12 @@ function App() {
     }));
   };
 
+  // Handle picklist changes
   const handlePicklistChange = (e) => {
     setSelectedPicklist(e.target.value);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,6 +59,7 @@ function App() {
     }
   };
 
+  // Handle file download
   const handleDownload = () => {
     if (!output) return; // Do nothing if there's no output
 
