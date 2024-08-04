@@ -3,7 +3,11 @@
 }
 
 .App-header {
-  background-color: #79a6ff;
+  background: linear-gradient(
+    135deg,
+    #79a6ff,
+    #b0e0e6
+  ); /* Gradient background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,42 +19,42 @@
 
 .form-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row; /* Horizontal layout */
+  justify-content: space-between; /* Space between left and right */
+  align-items: flex-start; /* Align items to the start */
   width: 90%;
-  max-width: 800px;
+  max-width: 1200px; /* Increased width for better layout */
+  min-height: 500px; /* Minimum height to ensure enough space */
   margin: auto;
 }
 
 .textarea-code,
 .textarea-output {
-  width: 90%;
-  height: 150px;
-  margin: 10px 0;
+  width: 45%; /* Adjust width for side-by-side display */
+  min-height: 65vh; /* Ensure enough height for code input/output */
+  margin: 10px;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 10px; /* Rounded corners */
   border: 1px solid #ccc;
   font-size: 16px;
   font-family: "Courier New", Courier, monospace;
+  resize: vertical; /* Allow vertical resizing */
 }
 
 .options-container {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin: 10px 0;
+  flex-direction: column; /* Ensure all options are in one column */
+  width: 45%; /* Adjust width for side-by-side display */
 }
 
-.checkbox-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
+.checkbox-container,
 .picklist-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.checkbox-container label,
+.picklist-container label {
+  display: block; /* Stack checkboxes and labels vertically */
 }
 
 .picklist-container select {
@@ -64,12 +68,13 @@
   display: flex;
   justify-content: space-between;
   width: 90%;
-  max-width: 800px;
-  margin: 20px 0;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
-.submit-button {
-  background-color: #008cba; /* Blue */
+.submit-button,
+.download-button {
+  background-color: #008cba; /* Blue for submit button */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -78,38 +83,30 @@
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
-  transition-duration: 0.4s;
+  transition: background-color 0.4s, color 0.4s, border 0.4s;
   cursor: pointer;
+  border-radius: 20px; /* Curved button corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
 }
 
 .submit-button:hover {
   background-color: white;
-  color: black;
+  color: #008cba;
   border: 2px solid #008cba;
 }
 
 .download-button {
-  background-color: #4caf50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
+  background-color: #000; /* Black background for download button */
 }
 
 .download-button:hover {
   background-color: white;
-  color: black;
-  border: 2px solid #4caf50;
+  color: #000; /* Black text on hover */
+  border: 2px solid #000; /* Black border on hover */
 }
 
 .download-button.disabled {
-  background-color: #9e9e9e; /* Grey */
+  background-color: #9e9e9e; /* Grey for disabled state */
   border: none;
   cursor: not-allowed;
 }
