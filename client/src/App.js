@@ -44,7 +44,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/submit-code", {
+      await axios.post("http://localhost:5000/submit-code", {
         code,
         checkboxes,
         selectedPicklist,
@@ -56,6 +56,8 @@ function App() {
   };
 
   const handleDownload = () => {
+    if (!output) return; // Do nothing if there's no output
+
     const element = document.createElement("a");
     const file = new Blob([output], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
@@ -153,7 +155,8 @@ function App() {
             <button
               type="button"
               onClick={handleDownload}
-              className="download-button"
+              className={`download-button ${!output && "disabled"}`}
+              disabled={!output}
             >
               Download
             </button>

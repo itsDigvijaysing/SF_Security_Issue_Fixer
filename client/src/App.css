@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #79a6ff;
   min-height: 100vh;
@@ -24,7 +13,81 @@
   color: white;
 }
 
-/* App.css */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.textarea-code,
+.textarea-output {
+  width: 90%;
+  height: 150px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.options-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.picklist-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.picklist-container select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 800px;
+  margin: 20px 0;
+}
+
+.submit-button {
+  background-color: #008cba; /* Blue */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid #008cba;
+}
+
 .download-button {
   background-color: #4caf50; /* Green */
   border: none;
@@ -45,24 +108,10 @@
   border: 2px solid #4caf50;
 }
 
-.color-button {
-  background-color: #008cba; /* Blue */
+.download-button.disabled {
+  background-color: #9e9e9e; /* Grey */
   border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
-
-.color-button:hover {
-  background-color: white;
-  color: black;
-  border: 2px solid #008cba;
+  cursor: not-allowed;
 }
 
 .App-link {
