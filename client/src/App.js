@@ -120,6 +120,7 @@ function App() {
                 </label>
               </div>
               <div className="picklist-container">
+                <label>Select Sharing Rule</label>
                 <select
                   value={selectedPicklist}
                   onChange={handlePicklistChange}
@@ -147,36 +148,4 @@ function App() {
                     checked={checkboxes.esoql}
                     onChange={handleCheckboxChange}
                   />
-                  Extract SOQL Queries
-                </label>
-              </div>
-            </div>
-            <textarea
-              value={output}
-              readOnly
-              placeholder="Output will be displayed here"
-              className="textarea-output"
-            ></textarea>
-          </div>
-          <div className="submit-container">
-            <p>App Development still In progress</p>
-            {error && <p className="error-message">{error}</p>}
-            <button type="submit" className="submit-button">
-              Submit
-            </button>
-            <button
-              type="button"
-              onClick={handleDownload}
-              className={`download-button ${!output ? "disabled" : ""}`}
-              disabled={!output}
-            >
-              Download
-            </button>
-          </div>
-        </form>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+                  Extract SO
