@@ -1,5 +1,7 @@
+/* Base styles */
 .App {
   text-align: center;
+  font-family: Arial, sans-serif; /* Better font for readability */
 }
 
 .App-header {
@@ -17,6 +19,7 @@
   color: white;
 }
 
+/* Form container styles */
 .form-container {
   display: flex;
   flex-direction: row; /* Horizontal layout */
@@ -28,6 +31,7 @@
   margin: auto;
 }
 
+/* Textarea styles */
 .textarea-code,
 .textarea-output {
   width: 45%; /* Adjust width for side-by-side display */
@@ -37,10 +41,12 @@
   border-radius: 10px; /* Rounded corners */
   border: 1px solid #ccc;
   font-size: 16px;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Courier New", Courier, monospace; /* Monospace font for code */
   resize: vertical; /* Allow vertical resizing */
+  background-color: #f5f5f5; /* Light background for better contrast */
 }
 
+/* Options container styles */
 .options-container {
   display: flex;
   flex-direction: column; /* Ensure all options are in one column */
@@ -55,6 +61,7 @@
 .checkbox-container label,
 .picklist-container label {
   display: block; /* Stack checkboxes and labels vertically */
+  margin: 5px 0; /* Space between labels */
 }
 
 .picklist-container select {
@@ -62,16 +69,20 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 16px;
+  width: 100%; /* Full width select */
 }
 
+/* Submit container styles */
 .submit-container {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Center align items */
   width: 90%;
   max-width: 1200px;
   margin: 20px auto;
 }
 
+/* Button styles */
 .submit-button,
 .download-button {
   background-color: #008cba; /* Blue for submit button */
@@ -111,8 +122,10 @@
   cursor: not-allowed;
 }
 
-.App-link {
-  color: #61dafb;
+/* Error message styles */
+.error-message {
+  color: red;
+  font-weight: bold;
 }
 
 @keyframes App-logo-spin {
