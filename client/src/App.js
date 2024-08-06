@@ -148,4 +148,35 @@ function App() {
                     checked={checkboxes.esoql}
                     onChange={handleCheckboxChange}
                   />
-                  Extract SO
+                  Extract SOQLs
+                </label>
+              </div>
+            </div>
+            <textarea
+              value={output}
+              readOnly
+              placeholder="Output will be displayed here"
+              className="textarea-output"
+            ></textarea>
+          </div>
+          <div className="submit-container">
+            <button type="submit" className="submit-button">
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={!output}
+              className={`download-button ${!output ? "disabled" : ""}`}
+            >
+              Download Output
+            </button>
+          </div>
+          {error && <div className="error-message">{error}</div>}
+        </form>
+      </header>
+    </div>
+  );
+}
+
+export default App;
