@@ -14,6 +14,7 @@ function App() {
     esoql: false,
   });
   const [selectedPicklist, setSelectedPicklist] = useState("");
+  const [error, setError] = useState(null);
 
   // Fetch output when form is submitted
   useEffect(() => {
@@ -23,10 +24,13 @@ function App() {
         setOutput(response.data);
       } catch (error) {
         console.error("Error fetching output file:", error);
+        setError("Failed to fetch output. Please try again later.");
       }
     };
+
     if (submitted) {
       fetchOutput();
+      setSubmitted(false);
     }
   }, [submitted]);
 
@@ -54,14 +58,16 @@ function App() {
         selectedPicklist,
       });
       setSubmitted(true);
+      setError(null);
     } catch (error) {
       console.error("Error submitting code:", error);
+      setError("Failed to submit code. Please try again.");
     }
   };
 
   // Handle file download
   const handleDownload = () => {
-    if (!output) return; // Do nothing if there's no output
+    if (!output) return;
 
     const element = document.createElement("a");
     const file = new Blob([output], { type: "text/plain" });
@@ -154,13 +160,14 @@ function App() {
           </div>
           <div className="submit-container">
             <p>App Development still In progress</p>
+            {error && <p className="error-message">{error}</p>}
             <button type="submit" className="submit-button">
               Submit
             </button>
             <button
               type="button"
               onClick={handleDownload}
-              className={`download-button ${!output && "disabled"}`}
+              className={`download-button ${!output ? "disabled" : ""}`}
               disabled={!output}
             >
               Download
