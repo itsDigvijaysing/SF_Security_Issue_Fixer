@@ -25,19 +25,23 @@
   flex-direction: row; /* Horizontal layout */
   justify-content: space-between; /* Space between left and right */
   align-items: flex-start; /* Align items to the start */
-  width: 90%;
-  max-width: 1200px; /* Increased width for better layout */
+  width: 95%; /* Adjusted width */
+  max-width: 1400px; /* Increased width for better layout */
   min-height: 500px; /* Minimum height to ensure enough space */
   margin: auto;
+  background-color: #f0f8ff; /* Light blue background */
+  padding: 20px; /* Add padding for better spacing */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
 }
 
 /* Textarea styles */
 .textarea-code,
 .textarea-output {
-  width: 45%; /* Adjust width for side-by-side display */
+  width: 48%; /* Adjust width for side-by-side display */
   min-height: 65vh; /* Ensure enough height for code input/output */
   margin: 10px;
-  padding: 10px;
+  padding: 15px; /* Increased padding for better spacing */
   border-radius: 10px; /* Rounded corners */
   border: 1px solid #ccc;
   font-size: 16px;
@@ -50,12 +54,15 @@
 .options-container {
   display: flex;
   flex-direction: column; /* Ensure all options are in one column */
-  width: 45%; /* Adjust width for side-by-side display */
+  width: 48%; /* Adjust width for side-by-side display */
 }
 
 .checkbox-container,
 .picklist-container {
   margin-bottom: 10px;
+  padding: 10px; /* Add padding for better spacing */
+  background-color: #e6f7ff; /* Light cyan background */
+  border-radius: 8px; /* Rounded corners */
 }
 
 .checkbox-container label,
@@ -78,7 +85,7 @@
   justify-content: space-between;
   align-items: center; /* Center align items */
   width: 90%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 20px auto;
 }
 
