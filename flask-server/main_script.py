@@ -18,7 +18,7 @@ def soql_query_fixer(apex_code):
         if re.search(r'Order By|Limit', query, re.IGNORECASE):
             query = re.sub(r'(Order By|Limit)', r'WITH USER_MODE \1', query, flags=re.IGNORECASE)
         else:
-            query = re.sub(r'(];)', r' WITH USER_MODE \1', query)
+            query = re.sub(r';\s*$', ' WITH USER_MODE;', query)
         
         fixed_code = fixed_code.replace(match.group(0), query)
     return fixed_code
